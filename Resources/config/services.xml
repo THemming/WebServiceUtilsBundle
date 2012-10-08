@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="web_service_utils.cors"
+                 class="THemming\WebServiceUtilsBundle\EventListener\CrossOriginResourceScripting">
+            <argument type="service" id="logger"/>
+            <!--<argument>%web_service_utils.cors.enabled%</argument>-->
+            <!--<argument>%web_service_utils.cors.allow_domain%</argument>-->
+            <argument>true</argument>
+            <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse"/>
+        </service>
+
+        <service id="web_service_utils.http_capture"
+                 class="THemming\WebServiceUtilsBundle\EventListener\HttpCapture">
+            <argument type="service" id="logger"/>
+            <!--<argument>%web_service_utils.http_capture.enabled%</argument>-->
+            <argument>true</argument>
+            <!--<tag name="monolog.logger" channel="http_capture"/>-->
+            <tag name="kernel.event_listener" event="kernel.response" method="onKernelResponse"/>
+            <call method="setMaxLength">
+                <!--<argument>%web_service_utils.http_capture.max_length%</argument>-->
+                <argument>1000</argument>
+            </call>
+        </service>
+    </services>
+</container>
